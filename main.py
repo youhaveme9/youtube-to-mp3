@@ -7,12 +7,17 @@ from tkinter import *
 from functools import partial
 import pyautogui
 from youtube_dl.utils import DownloadError
+from tkinter.ttk import *
+import time
 
 root = Tk()
 def Download(url):
     global path
     global Url
     Url = url.get()
+    if Url=="":
+        pyautogui.alert("Please enter URL")
+        return
     # get present directory
     path = os.getcwd()
     try:
@@ -44,16 +49,19 @@ def song():
         ydl1.download([Url])
     except Exception as e:
         pyautogui.alert("Download Complete")
+        
         return
     
 
 root.title("Youtube to MP3 downloader")
 root.geometry("365x300")
-l1 = Label(root, text="Welcome to Youtube to MP3 downloader", bg='pink').place(x=10, y=5)
+l1 = Label(root, text="Youtube to MP3 downloader").place(x=70, y=5)
 url = StringVar()
 l2 = Label(root, text="URL: ").place(x=20, y=50)
 e1 = Entry(root, textvariable=url).place(x=95, y=50)
 Download = partial(Download, url)
-b1 = Button(root, text="Download", command=Download).place(x=105, y=80)
+b1 = Button(root, text="Download", command=Download).place(x=130, y=90)
+progress = Progressbar(root, orient = HORIZONTAL, 
+			length = 200, mode = 'determinate').place(x=93, y=150)
 
 root.mainloop()
